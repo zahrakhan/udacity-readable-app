@@ -1,3 +1,5 @@
+import {CATEGORIES} from '../actions/types'
+
 const initialState = [
     {
         "name": "react",
@@ -12,6 +14,8 @@ const initialState = [
 ]
 export default function categories(state = initialState, action) {
     switch (action.type) {
+        case CATEGORIES.LOAD_ALL:
+            return action.categories
         default:
             return state
     }

@@ -1,0 +1,4 @@
+/* CATEGORIES ACTION TYPES */
+export const CATEGORIES = {
+    LOAD_ALL: 'LOAD_CATEGORIES'
+}

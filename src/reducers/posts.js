@@ -1,5 +1,5 @@
+import {keyBy} from 'lodash'
 import {POSTS} from '../actions/types'
-import {groupListByKey} from '../utils/helper'
 
 const initialState = {
     'items': {
@@ -26,7 +26,6 @@ const initialState = {
             "commentCount": 0
         }
     }
-
 }
 
 export default function posts(state = initialState, action) {
@@ -34,7 +33,7 @@ export default function posts(state = initialState, action) {
         case POSTS.LOAD_ALL:
             return {
                 ...state,
-                items: groupListByKey(action.posts)
+                items: keyBy(action.posts)
             }
         default:
             return state

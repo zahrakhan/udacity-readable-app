@@ -2,3 +2,8 @@
 export const CATEGORIES = {
     LOAD_ALL: 'LOAD_CATEGORIES'
 }
+
+/* POSTS ACTION TYPES */
+export const POSTS = {
+    LOAD_ALL: 'LOAD_POSTS'
+}

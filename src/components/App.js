@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Route, Switch} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 
 import '../App.css'
 import CategoriesMenu from './CategoriesMenu'
@@ -10,10 +10,8 @@ class ReadableApp extends Component {
     return (
       <div>
         <CategoriesMenu/>
-        <Switch>
           <Route exact path="/" component={Posts}/>
           <Route exact path="/:category" component={Posts}/>
-        </Switch>
       </div>
     )
   }

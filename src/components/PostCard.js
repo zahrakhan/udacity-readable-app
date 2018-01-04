@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import moment from 'moment'
 import {Card, Icon, Grid, Divider, Item} from 'semantic-ui-react'
 
 const PostCard = ({
@@ -19,10 +20,12 @@ const PostCard = ({
     <Card.Content extra>
       <Item>
         <Icon color='teal' name='user'></Icon>
-        {author}</Item>
+        {author}
+      </Item>
       <Item>
-        <Icon color='teal' name='history'></Icon>
-        {timestamp}</Item>
+        <Icon color='teal' name='clock'></Icon>
+        {moment(timestamp).fromNow()}
+      </Item>
       <Divider/>
       <Grid columns={3}>
         <Grid.Column>
@@ -40,16 +43,16 @@ const PostCard = ({
             name='thumbs down'
             link
             onClick={(event) => {
-              console.log('thumbs up');
-              event.preventDefault();
+            console.log('thumbs up');
+            event.preventDefault();
           }}/> {voteScore}
           <Icon
             color='teal'
             name='thumbs up'
             link
             onClick={(event) => {
-              console.log('thumbs up');
-              event.preventDefault();
+            console.log('thumbs up');
+            event.preventDefault();
           }}/>
         </Grid.Column>
       </Grid>

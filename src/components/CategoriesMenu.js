@@ -32,6 +32,13 @@ class CategoriesMenu extends Component {
               {startCase(category.name)}
             </Menu.Item>
           ))}
+
+        <Menu.Menu position='right'>
+          <Menu.Item name='new-post' as={Link} to={'/new'}>
+            <Icon name='add'/>
+            New Post
+          </Menu.Item>
+        </Menu.Menu>
       </Menu>
     )
   }

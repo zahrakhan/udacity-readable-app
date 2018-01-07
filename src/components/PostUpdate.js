@@ -10,7 +10,7 @@ import {
 } from 'semantic-ui-react'
 import {startCase} from 'lodash'
 
-import {fetchPost, savePost} from '../actions'
+import {fetchPost, savePost, addPost} from '../actions'
 
 const FORM_MODE_TYPE = {
     ADD: 'new',
@@ -79,9 +79,13 @@ class PostUpdate extends Component {
         this.setState({
             saving: true
         }, () => {
-            this
-                .props
-                .updatePost(this.state.post)
+            this.state.isEditMode
+                ? this
+                    .props
+                    .updatePost(this.state.post)
+                : this
+                    .props
+                    .addPost(this.state.post)
         })
     }
     redirectTo = (path = '/', delay = 100) => {
@@ -94,7 +98,7 @@ class PostUpdate extends Component {
     }
     getPostViewPath = () => {
         const {category, id} = this.state.post;
-        return `/${category}/${id}`;
+        return `/${category}${this.state.isEditMode?'':`/posts`}/${id}`;
     }
 
     render() {
@@ -114,21 +118,28 @@ class PostUpdate extends Component {
                     <Item.Content>
                         <Form>
                             <Form.Input
-                                label='Title'
                                 name='title'
+                                label='Title'
                                 value={post.title}
                                 onChange={this.handleChange}/>
                             <Form.TextArea
-                                label='Message'
                                 name='body'
+                                label='Message'
                                 value={post.body}
                                 onChange={this.handleChange}/>
-                            <Form.Input label='Author' value={post.author} disabled={isEditMode}/>
+                            <Form.Input
+                                name='author'
+                                label='Author'
+                                value={post.author}
+                                onChange={this.handleChange}
+                                disabled={isEditMode}/>
                             <Form.Select
+                                name='category'
                                 label='Category'
                                 value={post.category}
                                 options={categories}
                                 placeholder='Category'
+                                onChange={this.handleChange}
                                 disabled={isEditMode}/>
 
                             <Button color='teal' onClick={() => this.handleSubmit()}>Submit</Button>
@@ -161,7 +172,8 @@ function mapStateToProps({
 function mapDispatchToProps(dispatch) {
     return {
         getPost: (id) => dispatch(fetchPost(id)),
-        updatePost: (post) => dispatch(savePost(post))
+        updatePost: (post) => dispatch(savePost(post)),
+        addPost: (post) => dispatch(addPost(post))
     }
 }
 

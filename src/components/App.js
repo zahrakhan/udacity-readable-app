@@ -14,6 +14,7 @@ class ReadableApp extends Component {
         <CategoriesMenu/>
         <Switch>
           <Route exact path="/" component={Posts}/>
+          <Route exact path="/new" component={PostUpdate}/>
           <Route exact path="/:category/posts" component={Posts}/>
           <Route exact path="/:category/:postId" component={PostDetail}/>
           <Route exact path="/:category/:postId/:mode" component={PostUpdate}/>

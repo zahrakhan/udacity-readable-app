@@ -1,5 +1,6 @@
 import {POSTS} from './types'
 import * as API from '../utils/api'
+import uuid from "uuid/v4";
 
 export function fetchPostsByCategory(category) {
     return dispatch => {
@@ -14,6 +15,18 @@ export function fetchPost(id) {
             .getPost(id)
             .then(post => dispatch(loadPost(post)))
             .catch(error => dispatch(loadPost({error})))
+    }
+}
+export function addPost(post) {
+    return dispatch => {
+        API
+            .addPost({
+                ...post,
+                id: uuid(),
+                timestamp: Date.now()
+              })
+            .then(post => dispatch(updatePost(post)))
+            .catch(error => dispatch(updatePost({error})))
     }
 }
 export function savePost(post) {

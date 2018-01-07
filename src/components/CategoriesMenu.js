@@ -8,7 +8,9 @@ import {fetchCategories} from '../actions'
 
 class CategoriesMenu extends Component {
   componentWillMount = () => {
-    this.props.getCategories()
+    this
+      .props
+      .getCategories()
   }
   render() {
     return (
@@ -20,9 +22,9 @@ class CategoriesMenu extends Component {
             <Menu.Item
               key={category.name}
               as={Link}
-              to={category.path}
+              to={'/' + category.path}
               className='item'>
-                {startCase(category.name)}
+              {startCase(category.name)}
             </Menu.Item>
           ))}
       </Menu>
@@ -35,7 +37,7 @@ function mapStateToProps({categories}) {
     categories: [
       {
         name: 'home',
-        path: '/'
+        path: ''
       },
       ...categories
     ]

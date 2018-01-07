@@ -20,6 +20,7 @@ export const getPostsByCategory = (category = 'all') => {
     : `/${category}`
   return fetch(`${api}${selected_category}/posts`, {headers}).then(res => res.json())
 }
+export const getPost = (id) => fetch(`${api}/posts/${id}`, {headers}).then(res => res.json())
 
 export const addPost = (post) => fetch(`${api}/posts`, {
   method: 'POST',

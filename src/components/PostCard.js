@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {Card, Icon, Grid, Divider, Item} from 'semantic-ui-react'
 
+import VoteButtons from './VoteButtons'
+
 const PostCard = ({
   id,
   timestamp,
@@ -37,23 +39,7 @@ const PostCard = ({
           {commentCount}
         </Grid.Column>
         <Grid.Column>
-          <Icon
-            color='teal'
-            flipped='horizontally'
-            name='thumbs down'
-            link
-            onClick={(event) => {
-            console.log('thumbs up');
-            event.preventDefault();
-          }}/> {voteScore}
-          <Icon
-            color='teal'
-            name='thumbs up'
-            link
-            onClick={(event) => {
-            console.log('thumbs up');
-            event.preventDefault();
-          }}/>
+          <VoteButtons voteScore={voteScore}/>
         </Grid.Column>
       </Grid>
     </Card.Content>

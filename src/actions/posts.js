@@ -37,6 +37,14 @@ export function savePost(post) {
             .catch(error => dispatch(updatePost({error})))
     }
 }
+export function deletePost(id) {
+    return dispatch => {
+        API
+            .deletePost(id)
+            .then(post => dispatch(updatePost(post)))
+            .catch(error => dispatch(updatePost({error})))
+    }
+}
 export function voteOnPost(id, vote) {
     return dispatch => {
         API

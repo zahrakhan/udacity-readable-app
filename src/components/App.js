@@ -1,19 +1,23 @@
 import React, {Component} from 'react'
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 
 import '../App.css'
 import CategoriesMenu from './CategoriesMenu'
 import Posts from './Posts'
 import PostDetail from './PostDetail'
+import PostUpdate from './PostUpdate'
 
 class ReadableApp extends Component {
   render() {
     return (
       <div>
         <CategoriesMenu/>
-        <Route exact path="/" component={Posts}/>
-        <Route exact path="/:category" component={Posts}/>
-        <Route exact path="/:category/:postId" component={PostDetail}/>
+        <Switch>
+          <Route exact path="/" component={Posts}/>
+          <Route exact path="/:category/posts" component={Posts}/>
+          <Route exact path="/:category/:postId" component={PostDetail}/>
+          <Route exact path="/:category/:postId/:mode" component={PostUpdate}/>
+        </Switch>
       </div>
     )
   }

@@ -16,7 +16,14 @@ export function fetchPost(id) {
             .catch(error => dispatch(loadPost({error})))
     }
 }
-
+export function savePost(post) {
+    return dispatch => {
+        API
+            .updatePost(post)
+            .then(post => dispatch(updatePost(post)))
+            .catch(error => dispatch(updatePost({error})))
+    }
+}
 export function voteOnPost(id, vote) {
     return dispatch => {
         API

@@ -26,7 +26,11 @@ class PostDetail extends Component {
             .getPost(this.props.match.params.postId)
     }
     editItem = (type, id) => {
-        console.log('editItem', type, id)
+        this
+            .props
+            .history
+            .push(this.getEditPath())
+
     }
     deleteItem = (type, id) => {
         console.log('deleteItem', type, id)
@@ -36,6 +40,9 @@ class PostDetail extends Component {
             if (itemType === ITEM_TYPE.POST)
                 this.props.voteOnPost(id, voteType)
         }
+    }
+    getEditPath = () => {
+        return `${this.props.location.pathname}/edit`
     }
     render() {
         const {
@@ -51,10 +58,10 @@ class PostDetail extends Component {
             },
             error
         } = this.props
-        // const {error} = this.props
+
         return (
             <div>
-                <Message color="red" hidden={!deleted}>No posts found</Message>
+                <Message color="red" hidden={!deleted}>Opps, couldn't find the post</Message>
                 <Message color="red" hidden={!error}>{error}</Message>
                 {!deleted && (
                     <Segment>
@@ -81,14 +88,16 @@ class PostDetail extends Component {
                                     <Grid>
                                         <Icon color='teal' name='user' title='Author'></Icon>
                                         {author}
-                                        <Icon color='teal' name='clock' title='Last updated at'></Icon>
+                                        <Icon color='teal' name='calendar' title='Created at'></Icon>
                                         {moment(timestamp).fromNow()}
                                         <Icon color='teal' name='tags'></Icon>
                                         {category}
                                     </Grid>
                                 </Item.Meta>
                                 <Divider/>
-                                <Item.Description>{body}</Item.Description>
+                                <Item.Description>
+                                    <br/> {body}
+                                </Item.Description>
                             </Item.Content>
                         </Item>
                     </Segment>

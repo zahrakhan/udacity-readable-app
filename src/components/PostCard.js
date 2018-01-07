@@ -25,7 +25,7 @@ const PostCard = ({
         {author}
       </Item>
       <Item>
-        <Icon color='teal' name='clock'></Icon>
+        <Icon color='teal' name='calendar'></Icon>
         {moment(timestamp).fromNow()}
       </Item>
       <Divider/>

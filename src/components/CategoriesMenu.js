@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Menu} from 'semantic-ui-react'
+import {Menu, Icon} from 'semantic-ui-react'
 import {startCase} from 'lodash'
 
 import {fetchCategories} from '../actions'
@@ -11,6 +11,11 @@ class CategoriesMenu extends Component {
     this
       .props
       .getCategories()
+  }
+  buildCategoryPath = (path) => {
+    return `/${path
+      ? `${path}/posts`
+      : ''}`
   }
   render() {
     return (
@@ -22,7 +27,7 @@ class CategoriesMenu extends Component {
             <Menu.Item
               key={category.name}
               as={Link}
-              to={'/' + category.path}
+              to={this.buildCategoryPath(category.path)}
               className='item'>
               {startCase(category.name)}
             </Menu.Item>

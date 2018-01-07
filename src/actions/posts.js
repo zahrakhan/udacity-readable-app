@@ -16,6 +16,20 @@ export function fetchPost(id) {
             .catch(error => dispatch(loadPost({error})))
     }
 }
+
+export function voteOnPost(id, vote) {
+    return dispatch => {
+        API
+            .voteOnPost({id, vote})
+            .then(post => dispatch(updatePost(post)))
+            .catch(error => dispatch(updatePost({error})))
+    }
+}
+
 function loadPost(post) {
     return {type: POSTS.LOAD_DETAIL, post}
+}
+
+function updatePost(post) {
+    return {type: POSTS.UPDATE, post}
 }

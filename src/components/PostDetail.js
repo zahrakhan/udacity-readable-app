@@ -11,10 +11,14 @@ import {
 } from 'semantic-ui-react'
 import moment from 'moment'
 
-import {fetchPost} from '../actions'
+import {fetchPost, voteOnPost} from '../actions'
 import ActionButtons from './ActionButtons'
 import VoteButtons from './VoteButtons'
 
+const ITEM_TYPE = {
+    POST: 'post',
+    COMMENT: 'comment'
+}
 class PostDetail extends Component {
     componentDidMount = () => {
         this
@@ -22,17 +26,15 @@ class PostDetail extends Component {
             .getPost(this.props.match.params.postId)
     }
     editItem = (type, id) => {
-        console.log('editItem', type, id);
+        console.log('editItem', type, id)
     }
     deleteItem = (type, id) => {
-        console.log('deleteItem', type, id);
-    }
-    voteOnItem = (type, id, voteType) => {
-        console.log('voteOnItem', type, id, voteType);
+        console.log('deleteItem', type, id)
     }
     voteOnItem = (itemType, id) => {
-        return function vote(voteType) {
-            console.log('voteOnItem', itemType, id, voteType);
+        return (voteType) => {
+            if (itemType === ITEM_TYPE.POST)
+                this.props.voteOnPost(id, voteType)
         }
     }
     render() {
@@ -46,11 +48,14 @@ class PostDetail extends Component {
                 timestamp,
                 voteScore,
                 deleted = true
-            }
+            },
+            error
         } = this.props
+        // const {error} = this.props
         return (
             <div>
                 <Message color="red" hidden={!deleted}>No posts found</Message>
+                <Message color="red" hidden={!error}>{error}</Message>
                 {!deleted && (
                     <Segment>
                         <Item>
@@ -62,10 +67,12 @@ class PostDetail extends Component {
                                                 <Header as='h1'>{title}</Header>
                                             </Grid.Column>
                                             <Grid.Column width={6} float='right' textAlign='right'>
-                                                <VoteButtons voteScore={voteScore} onVote={() => this.voteOnItem('post', id)}/>
+                                                <VoteButtons
+                                                    voteScore={voteScore}
+                                                    onVote={() => this.voteOnItem(ITEM_TYPE.POST, id)}/>
                                                 <ActionButtons
-                                                    onEdit={() => this.editItem('post', id)}
-                                                    onDelete={() => this.deleteItem('post', id)}/>
+                                                    onEdit={() => this.editItem(ITEM_TYPE.POST, id)}
+                                                    onDelete={() => this.deleteItem(ITEM_TYPE.POST, id)}/>
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -95,13 +102,15 @@ function mapStateToProps({
     posts
 }, ownProps) {
     return {
-        post: posts.items[ownProps.match.params.postId] || {}
+        post: posts.items[ownProps.match.params.postId] || {},
+        error: posts.error || false
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPost: (id) => dispatch(fetchPost(id))
+        getPost: (id) => dispatch(fetchPost(id)),
+        voteOnPost: (id, type) => dispatch(voteOnPost(id, type))
     }
 }
 

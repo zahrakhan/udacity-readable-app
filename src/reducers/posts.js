@@ -17,7 +17,20 @@ export default function posts(state = initialState, action) {
                 ...state,
                 items: keyBy([action.post], 'id')
             }
-        default:
-            return state
+        case POSTS.UPDATE:
+            return action.post.error
+                ? {
+                    ...state,
+                    error: action.post.error
+                }
+                : {
+                    ...state,
+                    items : {
+                        ...state.items,
+                        [action.post.id]: action.post
+                    }
+                }
+
+            default : return state
     }
 }

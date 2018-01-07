@@ -49,7 +49,7 @@ export const updatePost = ({id, title, body}) => fetch(`${api}/posts/${id}`, {
   body: JSON.stringify({title, body})
 }).then(res => res.json())
 
-export const deletePost = ({id}) => fetch(`${api}/posts/${id}`, {
+export const deletePost = (id) => fetch(`${api}/posts/${id}`, {
   method: 'DELETE',
   headers
 }).then(res => res.json())

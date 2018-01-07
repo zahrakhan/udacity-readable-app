@@ -11,7 +11,7 @@ import {
 } from 'semantic-ui-react'
 import moment from 'moment'
 
-import {fetchPost, voteOnPost} from '../actions'
+import {fetchPost, voteOnPost, deletePost} from '../actions'
 import ActionButtons from './ActionButtons'
 import VoteButtons from './VoteButtons'
 
@@ -20,26 +20,45 @@ const ITEM_TYPE = {
     COMMENT: 'comment'
 }
 class PostDetail extends Component {
+    state = {
+        isDeleting: false
+    }
     componentDidMount = () => {
         this
             .props
             .getPost(this.props.match.params.postId)
     }
+    componentWillReceiveProps = (props) => {
+        const isDeleted = this.state.isDeleting && !props.error
+        if (isDeleted) {
+            this.redirectTo()
+        }
+    }
     editItem = (type, id) => {
-        this
-            .props
-            .history
-            .push(this.getEditPath())
-
+        this.redirectTo(this.getEditPath())
     }
     deleteItem = (type, id) => {
-        console.log('deleteItem', type, id)
+        this.setState({
+            isDeleting: true
+        }, () => {
+            this
+                .props
+                .deletePost(id)
+        })
     }
     voteOnItem = (itemType, id) => {
         return (voteType) => {
             if (itemType === ITEM_TYPE.POST)
                 this.props.voteOnPost(id, voteType)
         }
+    }
+    redirectTo = (path = '/', delay = 0) => {
+        setTimeout(function () {
+            this
+                .props
+                .history
+                .push(path)
+        }.bind(this), delay);
     }
     getEditPath = () => {
         return `${this.props.location.pathname}/edit`
@@ -58,10 +77,11 @@ class PostDetail extends Component {
             },
             error
         } = this.props
+        const {isDeleting} = this.state
 
         return (
             <div>
-                <Message color="red" hidden={!deleted}>Opps, couldn't find the post</Message>
+                <Message color="red" hidden={!deleted || isDeleting}>Opps, couldn't find the post</Message>
                 <Message color="red" hidden={!error}>{error}</Message>
                 {!deleted && (
                     <Segment>
@@ -119,7 +139,8 @@ function mapStateToProps({
 function mapDispatchToProps(dispatch) {
     return {
         getPost: (id) => dispatch(fetchPost(id)),
-        voteOnPost: (id, type) => dispatch(voteOnPost(id, type))
+        voteOnPost: (id, type) => dispatch(voteOnPost(id, type)),
+        deletePost: (id) => dispatch(deletePost(id))
     }
 }
 

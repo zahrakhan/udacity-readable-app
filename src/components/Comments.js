@@ -19,14 +19,14 @@ class Comments extends Component {
     }
     render() {
         const {comments, parentId} = this.props
+        const items = Object.keys(comments.items)
+        const header = `COMMENTS (${items.length})`
         return (
             <Segment basic>
                 <Comment.Group size='small'>
-                    <Divider horizontal>COMMENTS</Divider>
-                    {comments.items && Object
-                        .keys(comments.items)
-                        .map(comment_id => <CommentItem key={comment_id} commentId={comment_id}/>)}
-                    <CommentForm parentId={parentId} />
+                    <Divider horizontal>{header}</Divider>
+                    {comments.items && items.map(comment_id => <CommentItem key={comment_id} commentId={comment_id}/>)}
+                    <CommentForm parentId={parentId}/>
                 </Comment.Group>
             </Segment>
         )

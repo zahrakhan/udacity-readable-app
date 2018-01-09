@@ -6,6 +6,7 @@ import CategoriesMenu from './CategoriesMenu'
 import Posts from './Posts'
 import PostItem from './PostItem'
 import PostForm from './PostForm'
+import {NoMatchFound} from './NoMatchFound'
 
 class ReadableApp extends Component {
   render() {
@@ -18,6 +19,7 @@ class ReadableApp extends Component {
           <Route exact path="/:category/posts" component={Posts}/>
           <Route exact path="/:category/:postId" component={PostItem}/>
           <Route exact path="/:category/:postId/:mode" component={PostForm}/>
+          <Route exact path="*" component={NoMatchFound}/>
         </Switch>
       </div>
     )

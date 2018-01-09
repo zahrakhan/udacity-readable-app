@@ -41,8 +41,8 @@ export function deletePost(id) {
     return dispatch => {
         API
             .deletePost(id)
-            .then(post => dispatch(updatePost(post)))
-            .catch(error => dispatch(updatePost({error})))
+            .then(post => dispatch(removePost(post)))
+            .catch(error => dispatch(removePost({error})))
     }
 }
 export function voteOnPost(id, vote) {
@@ -54,10 +54,12 @@ export function voteOnPost(id, vote) {
     }
 }
 
-function loadPost(post) {
+const loadPost = (post) => {
     return {type: POSTS.LOAD_DETAIL, post}
 }
-
-function updatePost(post) {
+const updatePost = (post) => {
     return {type: POSTS.UPDATE, post}
+}
+const removePost = (post) => {
+    return {type: POSTS.DELETE, post}
 }

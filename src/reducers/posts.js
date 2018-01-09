@@ -1,4 +1,4 @@
-import {keyBy} from 'lodash'
+import {keyBy, omit} from 'lodash'
 import {POSTS} from '../actions/types'
 
 const initialState = {
@@ -30,7 +30,11 @@ export default function posts(state = initialState, action) {
                         [action.post.id]: action.post
                     }
                 }
-
+                case POSTS.DELETE:
+                return {
+                    ...state,
+                    items: omit(state.items, action.post.id)
+                }
             default : return state
     }
 }

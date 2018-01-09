@@ -14,11 +14,8 @@ import moment from 'moment'
 import {fetchPost, voteOnPost, deletePost} from '../actions'
 import ActionButtons from './ActionButtons'
 import VoteButtons from './VoteButtons'
+import Comments from './Comments'
 
-const ITEM_TYPE = {
-    POST: 'post',
-    COMMENT: 'comment'
-}
 class PostDetail extends Component {
     state = {
         isDeleting: false
@@ -34,10 +31,10 @@ class PostDetail extends Component {
             this.redirectTo()
         }
     }
-    editItem = (type, id) => {
+    editPost = (id) => {
         this.redirectTo(this.getEditPath())
     }
-    deleteItem = (type, id) => {
+    deletePost = (id) => {
         this.setState({
             isDeleting: true
         }, () => {
@@ -46,9 +43,8 @@ class PostDetail extends Component {
                 .deletePost(id)
         })
     }
-    voteOnItem = (itemType, id) => {
+    voteOnPost = (id) => {
         return (voteType) => {
-            if (itemType === ITEM_TYPE.POST)
                 this.props.voteOnPost(id, voteType)
         }
     }
@@ -96,10 +92,10 @@ class PostDetail extends Component {
                                             <Grid.Column width={6} float='right' textAlign='right'>
                                                 <VoteButtons
                                                     voteScore={voteScore}
-                                                    onVote={() => this.voteOnItem(ITEM_TYPE.POST, id)}/>
+                                                    onVote={() => this.voteOnPost(id)}/>
                                                 <ActionButtons
-                                                    onEdit={() => this.editItem(ITEM_TYPE.POST, id)}
-                                                    onDelete={() => this.deleteItem(ITEM_TYPE.POST, id)}/>
+                                                    onEdit={() => this.editItem(id)}
+                                                    onDelete={() => this.deleteItem(id)}/>
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -122,6 +118,7 @@ class PostDetail extends Component {
                         </Item>
                     </Segment>
                 )}
+                <Comments parentId={id}/>
             </div>
         )
     }

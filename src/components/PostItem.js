@@ -16,7 +16,7 @@ import ActionButtons from './ActionButtons'
 import VoteButtons from './VoteButtons'
 import Comments from './Comments'
 
-class PostDetail extends Component {
+class PostItem extends Component {
     state = {
         isDeleting: false
     }
@@ -141,4 +141,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(PostItem)

@@ -4,8 +4,8 @@ import {Route, Switch} from 'react-router-dom'
 import '../App.css'
 import CategoriesMenu from './CategoriesMenu'
 import Posts from './Posts'
-import PostDetail from './PostDetail'
-import PostUpdate from './PostUpdate'
+import PostItem from './PostItem'
+import PostForm from './PostForm'
 
 class ReadableApp extends Component {
   render() {
@@ -14,10 +14,10 @@ class ReadableApp extends Component {
         <CategoriesMenu/>
         <Switch>
           <Route exact path="/" component={Posts}/>
-          <Route exact path="/new" component={PostUpdate}/>
+          <Route exact path="/new" component={PostForm}/>
           <Route exact path="/:category/posts" component={Posts}/>
-          <Route exact path="/:category/:postId" component={PostDetail}/>
-          <Route exact path="/:category/:postId/:mode" component={PostUpdate}/>
+          <Route exact path="/:category/:postId" component={PostItem}/>
+          <Route exact path="/:category/:postId/:mode" component={PostForm}/>
         </Switch>
       </div>
     )

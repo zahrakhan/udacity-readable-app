@@ -17,7 +17,7 @@ const FORM_MODE_TYPE = {
     EDIT: 'edit'
 }
 
-class PostUpdate extends Component {
+class PostForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -34,17 +34,22 @@ class PostUpdate extends Component {
         }
     }
     componentDidMount = () => {
+        const {
+            match: {
+                params: {
+                    postId
+                }
+            },
+            getPost
+        } = this.props.match.params
         this.setFormMode()
-        if (this.props.match.params.postId) {
-            this
-                .props
-                .getPost(this.props.match.params.postId)
-        }
-
+        if (postId)
+            getPost(postId)
     }
-    componentWillReceiveProps = (props) => {
-        if (props.post !== this.props.post && props.post.id) {
-            this.setState({post: props.post})
+    componentWillReceiveProps = (newProps) => {
+        const {post} = newProps
+        if (post !== this.props.post && post.id) {
+            this.setState({post})
         }
         if (this.state.saving)
             this.redirectTo(this.getPostViewPath(), 500)
@@ -76,16 +81,14 @@ class PostUpdate extends Component {
     }
 
     handleSubmit = () => {
+        const {post, isEditMode} = this.state
+        const {addPost, updatePost} = this.props
         this.setState({
             saving: true
         }, () => {
-            this.state.isEditMode
-                ? this
-                    .props
-                    .updatePost(this.state.post)
-                : this
-                    .props
-                    .addPost(this.state.post)
+            isEditMode
+                ? updatePost(post)
+                : addPost(post)
         })
     }
     redirectTo = (path = '/', delay = 100) => {
@@ -97,8 +100,17 @@ class PostUpdate extends Component {
         }.bind(this), delay);
     }
     getPostViewPath = () => {
-        const {category, id} = this.state.post;
-        return `/${category}${this.state.isEditMode?'':`/posts`}/${id}`;
+        const {
+            post: {
+                category,
+                id
+            },
+            isEditMode
+        } = this.state;
+
+        return `/${category}${isEditMode
+            ? ''
+            : `/posts`}/${id}`;
     }
 
     render() {
@@ -160,10 +172,11 @@ function mapStateToProps({
         post: posts.items[ownProps.match.params.postId] || {},
         error: posts.error || false,
         categories: categories.map(category => {
+            const {name} = category
             return {
-                key: category.name,
-                value: category.name,
-                text: startCase(category.name)
+                key: name,
+                value: name,
+                text: startCase(name)
             }
         })
     }
@@ -177,4 +190,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostUpdate)
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm)

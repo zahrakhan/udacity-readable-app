@@ -12,25 +12,21 @@ import {startCase} from 'lodash'
 
 import {fetchPost, savePost, addPost} from '../actions'
 
-const FORM_MODE_TYPE = {
-    ADD: 'new',
-    EDIT: 'edit'
+const newPost = {
+    id: '',
+    title: '',
+    author: '',
+    body: '',
+    category: '',
+    deleted: false
 }
-
 class PostForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isEditMode: false,
             saving: false,
-            post: {
-                id: '',
-                title: '',
-                author: '',
-                body: '',
-                category: '',
-                deleted: false
-            }
+            post: newPost
         }
     }
     componentDidMount = () => {
@@ -41,10 +37,19 @@ class PostForm extends Component {
                 }
             },
             getPost
-        } = this.props.match.params
-        this.setFormMode()
-        if (postId)
+        } = this.props
+
+        if (postId) {
+            this.setState({ isEditMode: true})
             getPost(postId)
+        } else {
+            this.setState({
+                post: {
+                    ...newPost
+                },
+                isEditMode: false
+            });
+        }
     }
     componentWillReceiveProps = (newProps) => {
         const {post} = newProps
@@ -53,18 +58,6 @@ class PostForm extends Component {
         }
         if (this.state.saving)
             this.redirectTo(this.getPostViewPath(), 500)
-    }
-    setFormMode = () => {
-        const {
-            match: {
-                params: {
-                    mode
-                }
-            }
-        } = this.props
-        this.setState({
-            isEditMode: mode && mode === FORM_MODE_TYPE.EDIT
-        })
     }
 
     handleChange = (e, {name, value}) => this.setState((prevState) => ({
@@ -120,7 +113,6 @@ class PostForm extends Component {
         const header_message = `${isEditMode
             ? `Update`
             : `Add new`} Post`
-
         return (
             <Segment>
                 <Message color="red" hidden={!post.deleted}>Opps, couldn't find the post</Message>
@@ -173,11 +165,7 @@ function mapStateToProps({
         error: posts.error || false,
         categories: categories.map(category => {
             const {name} = category
-            return {
-                key: name,
-                value: name,
-                text: startCase(name)
-            }
+            return {key: name, value: name, text: startCase(name)}
         })
     }
 }

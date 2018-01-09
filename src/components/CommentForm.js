@@ -21,13 +21,14 @@ class CommentForm extends Component {
     componentDidMount() {
         const {commentId, parentId, comments} = this.props
         if (commentId) {
-            this.setState({comment: comments.items[commentId], isEditMode: true});
+            this.setState({comment: comments.items[commentId], isEditMode: true})
         } else {
             this.setState({
                 comment: {
                     ...newComment,
                     parentId: parentId
-                }
+                },
+                isEditMode: false
             });
         }
     }

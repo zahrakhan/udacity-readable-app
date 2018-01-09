@@ -36,6 +36,14 @@ export function saveComment(comment) {
             .catch(error => dispatch(updateComment({error})))
     }
 }
+export function deleteComment(id) {
+    return dispatch => {
+        API
+            .deleteComment({id})
+            .then(comment => dispatch(removeComment(comment)))
+            .catch(error => dispatch(removeComment({error})))
+    }
+}
 export function voteOnComment(id, vote) {
     return dispatch => {
         API
@@ -51,4 +59,7 @@ function loadComment(comment) {
 
 function updateComment(comment) {
     return {type: COMMENTS.UPDATE, comment}
+}
+function removeComment(comment) {
+    return {type: COMMENTS.DELETE, comment}
 }

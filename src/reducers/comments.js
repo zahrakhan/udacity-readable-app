@@ -1,4 +1,4 @@
-import {keyBy} from 'lodash'
+import {keyBy, omit} from 'lodash'
 import {COMMENTS} from '../actions/types'
 
 const initialState = {
@@ -30,7 +30,12 @@ export default function comments(state = initialState, action) {
                         [action.comment.id]: action.comment
                     }
                 }
+            case COMMENTS.DELETE : return {
+                ...state,
+                items: omit(state.items, action.comment.id)
+            }
 
-            default : return state
+        default:
+            return state
     }
 }

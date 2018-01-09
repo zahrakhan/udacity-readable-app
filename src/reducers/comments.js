@@ -18,21 +18,33 @@ export default function comments(state = initialState, action) {
                 items: keyBy([action.comment], 'id')
             }
         case COMMENTS.UPDATE:
-            return action.comment.error
-                ? {
-                    ...state,
-                    error: action.comment.error
-                }
-                : {
-                    ...state,
-                    items : {
-                        ...state.items,
-                        [action.comment.id]: action.comment
+            {
+                const {comment} = action
+                return comment.error
+                    ? {
+                        ...state,
+                        error: comment.error
                     }
-                }
-            case COMMENTS.DELETE : return {
-                ...state,
-                items: omit(state.items, action.comment.id)
+                    : {
+                        ...state,
+                        items: {
+                            ...state.items,
+                            [comment.id]: comment
+                        }
+                    }
+            }
+        case COMMENTS.DELETE:
+            {
+                const {id, error} = action.comment
+                return error
+                    ? {
+                        ...state,
+                        error: error
+                    }
+                    : {
+                        ...state,
+                        items: omit(state.items, id)
+                    }
             }
 
         default:

@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Comment, Segment, Form, Button, Divider} from 'semantic-ui-react'
+import {Comment, Segment, Divider} from 'semantic-ui-react'
 
 import CommentItem from './CommentItem'
+import CommentForm from './CommentForm'
 import {fetchAllComments} from '../actions'
 
 class Comments extends Component {
@@ -17,7 +18,7 @@ class Comments extends Component {
             this.props.getComments(newProps.parentId)
     }
     render() {
-        const {comments} = this.props
+        const {comments, parentId} = this.props
         return (
             <Segment basic>
                 <Comment.Group size='small'>
@@ -25,7 +26,7 @@ class Comments extends Component {
                     {comments.items && Object
                         .keys(comments.items)
                         .map(comment_id => <CommentItem key={comment_id} commentId={comment_id}/>)}
-
+                    <CommentForm parentId={parentId} />
                 </Comment.Group>
             </Segment>
         )

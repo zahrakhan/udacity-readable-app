@@ -22,7 +22,7 @@ export function addComment(comment) {
         API.addComment({
             ...comment,
             id: uuid(),
-                timestamp: Date.now()
+            timestamp: Date.now()
             })
             .then(comment => dispatch(updateComment(comment)))
             .catch(error => dispatch(updateComment({error})))
@@ -53,13 +53,12 @@ export function voteOnComment(id, vote) {
     }
 }
 
-function loadComment(comment) {
+const loadComment = (comment) => {
     return {type: COMMENTS.LOAD_DETAIL, comment}
 }
-
-function updateComment(comment) {
+const updateComment = (comment) => {
     return {type: COMMENTS.UPDATE, comment}
 }
-function removeComment(comment) {
+const removeComment = (comment) => {
     return {type: COMMENTS.DELETE, comment}
 }

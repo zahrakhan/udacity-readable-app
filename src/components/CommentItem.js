@@ -6,10 +6,17 @@ import {Comment, Divider} from 'semantic-ui-react'
 import ActionButtons from './ActionButtons'
 import VoteButtons from './VoteButtons'
 
+import {voteOnComment} from '../actions'
+
 class CommentItem extends Component {
+    handleVoteOnComment = (voteType) => {
+        const {id} = this.props.comment
+        this
+            .props
+            .voteOnComment(id, voteType)
+    }
     render() {
         const {id, timestamp, body, author, voteScore} = this.props.comment
-        console.log('CommentItem render', this.props)
         return (
             <Comment >
                 <Comment.Content>
@@ -22,7 +29,7 @@ class CommentItem extends Component {
                     </Comment.Text>
                     <Comment.Actions>
                         <Comment.Action><ActionButtons/></Comment.Action>
-                        <Comment.Action><VoteButtons voteScore={voteScore}/></Comment.Action>
+                        <Comment.Action><VoteButtons voteScore={voteScore} onVote={this.handleVoteOnComment}/></Comment.Action>
                     </Comment.Actions>
                 </Comment.Content>
                 <Divider/>
@@ -41,7 +48,9 @@ function mapStateToProps({
 }
 
 function mapDispatchToProps(dispatch) {
-    return {}
+    return {
+        voteOnComment: (id, type) => dispatch(voteOnComment(id, type))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentItem)

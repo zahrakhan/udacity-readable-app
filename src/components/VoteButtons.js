@@ -17,7 +17,7 @@ export default function VoteButtons({
                 link
                 onClick={(event) => {
                 if (onVote)
-                    onVote()(VOTE_TYPE_DOWN)
+                    onVote(VOTE_TYPE_DOWN)
             }}></Icon>
             {voteScore}
             <Icon
@@ -27,7 +27,7 @@ export default function VoteButtons({
                 link
                 onClick={(event) => {
                 if (onVote)
-                    onVote()(VOTE_TYPE_UP)
+                    onVote(VOTE_TYPE_UP)
             }}></Icon>
         </span>
     );

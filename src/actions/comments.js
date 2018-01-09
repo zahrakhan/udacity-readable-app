@@ -19,12 +19,11 @@ export function fetchComment(id) {
 }
 export function addComment(comment) {
     return dispatch => {
-        API
-            .addComment({
-                ...comment,
-                id: uuid(),
+        API.addComment({
+            ...comment,
+            id: uuid(),
                 timestamp: Date.now()
-              })
+            })
             .then(comment => dispatch(updateComment(comment)))
             .catch(error => dispatch(updateComment({error})))
     }
@@ -46,10 +45,10 @@ export function voteOnComment(id, vote) {
     }
 }
 
-function loadComment(Comment) {
-    return {type: COMMENTS.LOAD_DETAIL, Comment}
+function loadComment(comment) {
+    return {type: COMMENTS.LOAD_DETAIL, comment}
 }
 
-function updateComment(Comment) {
-    return {type: COMMENTS.UPDATE, Comment}
+function updateComment(comment) {
+    return {type: COMMENTS.UPDATE, comment}
 }

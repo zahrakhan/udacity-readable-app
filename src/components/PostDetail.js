@@ -31,10 +31,11 @@ class PostDetail extends Component {
             this.redirectTo()
         }
     }
-    editPost = (id) => {
+    handleEditPost = () => {
         this.redirectTo(this.getEditPath())
     }
-    deletePost = (id) => {
+    handleDeletePost = () => {
+        const {id} = this.props.post
         this.setState({
             isDeleting: true
         }, () => {
@@ -43,10 +44,9 @@ class PostDetail extends Component {
                 .deletePost(id)
         })
     }
-    voteOnPost = (id) => {
-        return (voteType) => {
-                this.props.voteOnPost(id, voteType)
-        }
+    handleVoteOnPost = (voteType) => {
+        const {id} = this.props.post
+        this.props.votePost(id, voteType)
     }
     redirectTo = (path = '/', delay = 0) => {
         setTimeout(function () {
@@ -92,10 +92,10 @@ class PostDetail extends Component {
                                             <Grid.Column width={6} float='right' textAlign='right'>
                                                 <VoteButtons
                                                     voteScore={voteScore}
-                                                    onVote={() => this.voteOnPost(id)}/>
+                                                    onVote={this.handleVoteOnPost}/>
                                                 <ActionButtons
-                                                    onEdit={() => this.editItem(id)}
-                                                    onDelete={() => this.deleteItem(id)}/>
+                                                    onEdit={this.handleEditPost}
+                                                    onDelete={this.handleDeletePost}/>
                                             </Grid.Column>
                                         </Grid.Row>
                                     </Grid>
@@ -136,7 +136,7 @@ function mapStateToProps({
 function mapDispatchToProps(dispatch) {
     return {
         getPost: (id) => dispatch(fetchPost(id)),
-        voteOnPost: (id, type) => dispatch(voteOnPost(id, type)),
+        votePost: (id, type) => dispatch(voteOnPost(id, type)),
         deletePost: (id) => dispatch(deletePost(id))
     }
 }

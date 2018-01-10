@@ -77,7 +77,7 @@ class CommentForm extends Component {
         }))
     }
     isCommentDataValid = () => {
-        const {author, body} = this.state
+        const {author, body} = this.state.comment
         return trim(author) && trim(body)
     }
     render() {

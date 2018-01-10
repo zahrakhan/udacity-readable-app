@@ -39,9 +39,8 @@ Download or clone this repository.
 - git clone https://github.com/zahrakhan/udacity-readable-app.git
 ```
 
-Run following commands from project root directory
+Run following commands from frontend project root directory
 
-    - `cd frontend`
     - `npm install`
     - `node server`
 

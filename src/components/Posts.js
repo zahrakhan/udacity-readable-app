@@ -41,14 +41,14 @@ class Posts extends Component {
         {sorted_item_keys.length
           ? (
             <span>
-              <p>
+              <Segment basic>
                 Show posts by {' '}
                 <Dropdown
                   inline
                   options={portSortOptions}
                   defaultValue={sortByOrder}
                   onChange={this.handleSortOrderChange}/>
-              </p>
+              </Segment>
               <Card.Group>
                 {sorted_item_keys.map(post_id => (<PostCard key={'post' + post_id} {...items[post_id]}/>))}
               </Card.Group>

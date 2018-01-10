@@ -8,7 +8,7 @@ import {
     Button,
     Segment
 } from 'semantic-ui-react'
-import {startCase} from 'lodash'
+import {startCase, trim} from 'lodash'
 
 import {fetchPost, savePost, addPost} from '../actions'
 
@@ -26,7 +26,8 @@ class PostForm extends Component {
         this.state = {
             isEditMode: false,
             saving: false,
-            post: newPost
+            post: newPost,
+            validationError: ''
         }
     }
     componentDidMount = () => {
@@ -40,7 +41,7 @@ class PostForm extends Component {
         } = this.props
 
         if (postId) {
-            this.setState({ isEditMode: true})
+            this.setState({isEditMode: true})
             getPost(postId)
         } else {
             this.setState({
@@ -48,7 +49,7 @@ class PostForm extends Component {
                     ...newPost
                 },
                 isEditMode: false
-            });
+            })
         }
     }
     componentWillReceiveProps = (newProps) => {
@@ -63,7 +64,7 @@ class PostForm extends Component {
     handleChange = (e, {name, value}) => this.setState((prevState) => ({
         post: {
             ...prevState.post,
-            [name]: value
+            [name]: trim(value)
         }
     }))
     handleCancel = () => {
@@ -76,13 +77,25 @@ class PostForm extends Component {
     handleSubmit = () => {
         const {post, isEditMode} = this.state
         const {addPost, updatePost} = this.props
-        this.setState({
-            saving: true
-        }, () => {
-            isEditMode
-                ? updatePost(post)
-                : addPost(post)
-        })
+
+        if (this.isPostDataValid()) {
+            this.setState({
+                saving: true,
+                validationError: ''
+            }, () => {
+                isEditMode
+                    ? updatePost(post)
+                    : addPost(post)
+            })
+        } else {
+            this.setState({
+                validationError: `All fields are required`
+            })
+        }
+    }
+    isPostDataValid = () => {
+        const {post} = this.state
+        return post.author && post.body && post.category
     }
     redirectTo = (path = '/', delay = 100) => {
         setTimeout(function () {
@@ -99,15 +112,17 @@ class PostForm extends Component {
                 id
             },
             isEditMode
-        } = this.state;
+        } = this.state
 
-        return `/${category}${isEditMode
-            ? ''
-            : `/posts`}/${id}`;
+        return category
+            ? `/${category}${isEditMode
+                ? ''
+                : `/posts`}/${id}`
+            : '/'
     }
 
     render() {
-        const {post, isEditMode} = this.state
+        const {post, isEditMode, validationError} = this.state
         const {categories, error} = this.props
 
         const header_message = `${isEditMode
@@ -117,6 +132,7 @@ class PostForm extends Component {
             <Segment>
                 <Message color="red" hidden={!post.deleted}>Opps, couldn't find the post</Message>
                 <Message color="red" hidden={!error}>{error}</Message>
+                <Message color="red" hidden={!validationError}>{validationError}</Message>
                 <Item>
                     <Header as='h1'>{header_message}</Header>
                     <Item.Content>

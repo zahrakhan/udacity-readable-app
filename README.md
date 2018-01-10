@@ -50,4 +50,12 @@ Run following commands from project root directory
 The project uses the following dependencies:
 
 * React
+* Lodash
+* MomentJs
+* React Redux
+* Redux
+* Redux Thunk
+* Semantic-ui-css
+* Semantic-ui-react
+* Uuid
 

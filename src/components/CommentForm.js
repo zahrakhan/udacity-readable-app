@@ -44,7 +44,7 @@ class CommentForm extends Component {
     }))
     handleSubmit = (event) => {
         event.preventDefault()
-        const {comment, isEditMode} = this.state.comment
+        const {comment, isEditMode} = this.state
         const {updateComment, onEdit, addComment} = this.props
         if (isEditMode) {
             updateComment(comment)

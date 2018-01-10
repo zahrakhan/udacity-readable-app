@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {Card, Icon, Grid, Divider, Item} from 'semantic-ui-react'
 
-import VoteButtons from './VoteButtons'
+import ActionsOnPost from './ActionsOnPost'
 
 const PostCard = ({
   id,
@@ -16,8 +16,8 @@ const PostCard = ({
   deleted,
   commentCount
 }) => (
-  <Card as={Link} to={'/' + category + '/' + id} color='teal'>
-    <Card.Content header={title}/>
+  <Card color='teal'>
+    <Card.Content header={title} as={Link} to={'/' + category + '/' + id}/>
     <Card.Content description={body}/>
     <Card.Content extra>
       <Item>
@@ -30,16 +30,16 @@ const PostCard = ({
       </Item>
       <Divider/>
       <Grid columns={3}>
-        <Grid.Column>
+        <Grid.Column width={5}>
           <Icon color='teal' name='tags'></Icon>
           {category}
         </Grid.Column>
-        <Grid.Column>
+        <Grid.Column width={4}>
           <Icon color='teal' name='comments'></Icon>
           {commentCount}
         </Grid.Column>
-        <Grid.Column>
-          <VoteButtons voteScore={voteScore}/>
+        <Grid.Column width={7}>
+          <ActionsOnPost postId={id}/>
         </Grid.Column>
       </Grid>
     </Card.Content>

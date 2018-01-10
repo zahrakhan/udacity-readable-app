@@ -68,10 +68,10 @@ class PostForm extends Component {
         }
     }))
     handleCancel = () => {
-        const redirectionPath = this.state.isEditMode
-            ? this.getPostViewPath()
-            : ''
-        this.redirectTo(redirectionPath)
+        this
+            .props
+            .history
+            .goBack()
     }
 
     handleSubmit = () => {

@@ -11,55 +11,15 @@ import {
 } from 'semantic-ui-react'
 import moment from 'moment'
 
-import {fetchPost, voteOnPost, deletePost} from '../actions'
-import ActionButtons from './ActionButtons'
-import VoteButtons from './VoteButtons'
+import {fetchPost} from '../actions'
+import ActionsOnPost from './ActionsOnPost'
 import Comments from './Comments'
 
 class PostItem extends Component {
-    state = {
-        isDeleting: false
-    }
     componentDidMount = () => {
         this
             .props
             .getPost(this.props.match.params.postId)
-    }
-    componentWillReceiveProps = (props) => {
-        const isDeleted = this.state.isDeleting && !props.error
-        if (isDeleted) {
-            this.redirectTo()
-        }
-    }
-    handleEditPost = () => {
-        this.redirectTo(this.getEditPath())
-    }
-    handleDeletePost = () => {
-        const {id} = this.props.post
-        this.setState({
-            isDeleting: true
-        }, () => {
-            this
-                .props
-                .deletePost(id)
-        })
-    }
-    handleVoteOnPost = (voteType) => {
-        const {id} = this.props.post
-        this
-            .props
-            .votePost(id, voteType)
-    }
-    redirectTo = (path = '/', delay = 0) => {
-        setTimeout(function () {
-            this
-                .props
-                .history
-                .push(path)
-        }.bind(this), delay);
-    }
-    getEditPath = () => {
-        return `${this.props.location.pathname}/edit`
     }
     render() {
         const {
@@ -70,17 +30,13 @@ class PostItem extends Component {
                 body,
                 category,
                 timestamp,
-                voteScore,
                 deleted = true
-            },
-            error
+            }
         } = this.props
-        const {isDeleting} = this.state
 
         return (
             <div>
-                <Message color="red" hidden={!deleted || isDeleting}>Opps, couldn't find the post</Message>
-                <Message color="red" hidden={!error}>{error}</Message>
+                <Message color="red" hidden={!deleted}>Opps, couldn't find the post</Message>
                 {!deleted && (
                     <span>
                         <Segment>
@@ -93,8 +49,7 @@ class PostItem extends Component {
                                                     <Header as='h1'>{title}</Header>
                                                 </Grid.Column>
                                                 <Grid.Column width={6} float='right' textAlign='right'>
-                                                    <VoteButtons voteScore={voteScore} onVote={this.handleVoteOnPost}/>
-                                                    <ActionButtons onEdit={this.handleEditPost} onDelete={this.handleDeletePost}/>
+                                                    <ActionsOnPost postId={id}/>
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>
@@ -128,16 +83,13 @@ function mapStateToProps({
     posts
 }, ownProps) {
     return {
-        post: posts.items[ownProps.match.params.postId] || {},
-        error: posts.error || false
+        post: posts.items[ownProps.match.params.postId] || {}
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getPost: (id) => dispatch(fetchPost(id)),
-        votePost: (id, type) => dispatch(voteOnPost(id, type)),
-        deletePost: (id) => dispatch(deletePost(id))
+        getPost: (id) => dispatch(fetchPost(id))
     }
 }
 

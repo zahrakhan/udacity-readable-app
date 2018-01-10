@@ -16,7 +16,10 @@ export default function posts(state = initialState, action) {
         case POSTS.LOAD_DETAIL:
             return {
                 ...state,
-                items: keyBy([action.post], 'id')
+                items: {
+                    ...state.items,
+                    [action.post.id]: action.post
+                }
             }
         case POSTS.UPDATE:
             {

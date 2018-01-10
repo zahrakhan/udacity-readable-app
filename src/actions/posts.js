@@ -19,12 +19,11 @@ export function fetchPost(id) {
 }
 export function addPost(post) {
     return dispatch => {
-        API
-            .addPost({
-                ...post,
-                id: uuid(),
+        API.addPost({
+            ...post,
+            id: uuid(),
                 timestamp: Date.now()
-              })
+            })
             .then(post => dispatch(updatePost(post)))
             .catch(error => dispatch(updatePost({error})))
     }
@@ -52,6 +51,10 @@ export function voteOnPost(id, vote) {
             .then(post => dispatch(updatePost(post)))
             .catch(error => dispatch(updatePost({error})))
     }
+}
+
+export function setPostsSortOrder(order) {
+    return dispatch => dispatch({type: POSTS.SORT_ORDER, order})
 }
 
 const loadPost = (post) => {

@@ -16,7 +16,7 @@ const PostCard = ({
   deleted,
   commentCount
 }) => (
-  <Card as={Link} to={'/' + category + '/' + id}>
+  <Card as={Link} to={'/' + category + '/' + id} color='teal'>
     <Card.Content header={title}/>
     <Card.Content description={body}/>
     <Card.Content extra>

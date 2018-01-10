@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Segment, Divider, Card, Message} from 'semantic-ui-react'
+import {Segment, Divider, Card, Message, Dropdown} from 'semantic-ui-react'
+import {sortBy, keyBy} from 'lodash'
 
-import {fetchPostsByCategory} from '../actions'
+import {fetchPostsByCategory, setPostsSortOrder} from '../actions'
 import PostCard from './PostCard'
+import {portSortOptions} from '../utils/helper'
 
 class Posts extends Component {
   componentWillReceiveProps = (newProps) => {
@@ -25,29 +27,55 @@ class Posts extends Component {
       .props
       .getPostsByCategory(this.props.match.params.category)
   }
+  handleSortOrderChange = (e, {value}) => {
+    this
+      .props
+      .setSortOrder(value)
+  }
   render() {
-    const {posts} = this.props
-    const posts_key_list = Object.keys(posts.items);
+    const {items, sortByOrder} = this.props.posts
+    const sorted_item_keys = Object.keys(items)
     return (
       <Segment basic>
-        <Divider/>
         <Divider horizontal>POSTS</Divider>
-        <Message color="red" hidden={posts_key_list.length > 0}>No posts found</Message>
-        <Card.Group>
-          {posts_key_list.map(post_id => (<PostCard key={'post' + post_id} {...posts.items[post_id]}/>))}
-        </Card.Group>
+        {sorted_item_keys.length
+          ? (
+            <span>
+              <p>
+                Show posts by {' '}
+                <Dropdown
+                  inline
+                  options={portSortOptions}
+                  defaultValue={sortByOrder}
+                  onChange={this.handleSortOrderChange}/>
+              </p>
+              <Card.Group>
+                {sorted_item_keys.map(post_id => (<PostCard key={'post' + post_id} {...items[post_id]}/>))}
+              </Card.Group>
+            </span>
+          )
+          : (
+            <Message color="red" hidden={sorted_item_keys.length > 0}>No posts found</Message>
+          )}
       </Segment>
     )
   }
 }
 
 function mapStateToProps({posts}) {
-  return {posts}
+  const {items, sortByOrder} = posts
+  return {
+    posts: {
+      ...posts,
+      items: keyBy(sortBy(Object.values(items), sortByOrder).reverse(), 'id')
+    }
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPostsByCategory: (category) => dispatch(fetchPostsByCategory(category))
+    getPostsByCategory: (category) => dispatch(fetchPostsByCategory(category)),
+    setSortOrder: (order) => dispatch(setPostsSortOrder(order))
   }
 }
 

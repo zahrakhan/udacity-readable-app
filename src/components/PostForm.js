@@ -88,9 +88,7 @@ class PostForm extends Component {
                     : addPost(post)
             })
         } else {
-            this.setState({
-                validationError: `All fields are required`
-            })
+            this.setState({validationError: `All fields are required`})
         }
     }
     isPostDataValid = () => {
@@ -103,7 +101,7 @@ class PostForm extends Component {
                 .props
                 .history
                 .push(path)
-        }.bind(this), delay);
+        }.bind(this), delay)
     }
     getPostViewPath = () => {
         const {

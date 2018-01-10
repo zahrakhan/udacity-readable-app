@@ -64,7 +64,7 @@ class PostForm extends Component {
     handleChange = (e, {name, value}) => this.setState((prevState) => ({
         post: {
             ...prevState.post,
-            [name]: trim(value)
+            [name]: value
         }
     }))
     handleCancel = () => {
@@ -92,8 +92,8 @@ class PostForm extends Component {
         }
     }
     isPostDataValid = () => {
-        const {post} = this.state
-        return post.author && post.body && post.category
+        const {author, body, category} = this.state.post
+        return trim(author) && trim(body) && trim(category)
     }
     redirectTo = (path = '/', delay = 100) => {
         setTimeout(function () {

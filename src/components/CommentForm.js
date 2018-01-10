@@ -41,7 +41,7 @@ class CommentForm extends Component {
     handleChange = (e, {name, value}) => this.setState((prevState) => ({
         comment: {
             ...prevState.comment,
-            [name]: trim(value)
+            [name]: value
         }
     }))
     handleSubmit = (event) => {
@@ -77,8 +77,8 @@ class CommentForm extends Component {
         }))
     }
     isCommentDataValid = () => {
-        const {comment} = this.state
-        return comment.author && comment.body
+        const {author, body} = this.state
+        return trim(author) && trim(body)
     }
     render() {
         const {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Segment, Form, Button, Message} from 'semantic-ui-react'
+import {trim} from 'lodash'
 
 import {addComment, saveComment} from '../actions'
 
@@ -15,7 +16,8 @@ class CommentForm extends Component {
         super(props)
         this.state = {
             isEditMode: false,
-            comment: newComment
+            comment: newComment,
+            validationError: ''
         }
     }
     componentDidMount() {
@@ -39,20 +41,24 @@ class CommentForm extends Component {
     handleChange = (e, {name, value}) => this.setState((prevState) => ({
         comment: {
             ...prevState.comment,
-            [name]: value
+            [name]: trim(value)
         }
     }))
     handleSubmit = (event) => {
         event.preventDefault()
         const {comment, isEditMode} = this.state
         const {updateComment, onEdit, addComment} = this.props
-        if (isEditMode) {
-            updateComment(comment)
-            onEdit()
+        if (this.isCommentDataValid()) {
+            if (isEditMode) {
+                updateComment(comment)
+                onEdit()
+            } else {
+                addComment(comment)
+            }
+            this.resetComment()
         } else {
-            addComment(comment)
+            this.setState({validationError: `All fields are required`})
         }
-        this.resetComment()
     }
     handleCancel = () => {
         this.state.isEditMode
@@ -66,8 +72,13 @@ class CommentForm extends Component {
             comment: {
                 ...newComment,
                 parentId: prevState.parentId
-            }
+            },
+            validationError: ''
         }))
+    }
+    isCommentDataValid = () => {
+        const {comment} = this.state
+        return comment.author && comment.body
     }
     render() {
         const {
@@ -75,7 +86,8 @@ class CommentForm extends Component {
                 author,
                 body
             },
-            isEditMode
+            isEditMode,
+            validationError
         } = this.state
         const {error} = this.props
         const button_message = `${isEditMode
@@ -84,6 +96,7 @@ class CommentForm extends Component {
         return (
             <Segment color='teal'>
                 <Message color="red" hidden={!error}>{error}</Message>
+                <Message color="red" hidden={!validationError}>{validationError}</Message>
                 <Form reply>
                     <Form.Input
                         name='author'
